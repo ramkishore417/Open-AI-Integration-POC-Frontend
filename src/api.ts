@@ -1,9 +1,15 @@
 export const getWelcomeMessage = async (): Promise<string> => {
-   const response = await fetch('https://fictional-fishstick-qpxvvwjgrv5h97p4-8080.app.github.dev/openai/welcome');
-   const data = await response.json();
+  try {
+    const response = await fetch(
+      "https://fictional-fishstick-qpxvvwjgrv5h97p4-8080.app.github.dev/openai/welcome"
+    );
 
-   if(!data || !data.message) {
+    if (!response.ok) {
+      throw new Error("Request failed");
+    }
+
+    return await response.text();
+  } catch (error) {
     return "Welcome! We're glad to have you here.";
-   }
-   return data;
-}
+  }
+};
