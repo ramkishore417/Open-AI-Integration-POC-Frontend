@@ -1,6 +1,6 @@
-export type GenericResponse<T> = {
+export type GenericResponse= {
     resultCode: string;
     resultDescription: string;
-    resultObj: T;
+    resultObj: any;
     executionTime: number;
 };

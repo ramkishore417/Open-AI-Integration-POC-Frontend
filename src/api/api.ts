@@ -1,10 +1,8 @@
-import { GenericResponse } from "../types";
+import type { GenericResponse } from "../types";
 
-export const readWelcomeMessage = async (): Promise<GenericResponse<any>> => {
+export const readWelcomeMessage = async (): Promise<GenericResponse> => {
   try {
-    const response = await fetch(
-      "https://fictional-fishstick-qpxvvwjgrv5h97p4-8080.app.github.dev/openai/welcome"
-    );
+    const response = await fetch("http://localhost:8080/api/ai/welcome");
 
     if (!response.ok) {
       throw new Error("Request failed");
@@ -17,6 +15,34 @@ export const readWelcomeMessage = async (): Promise<GenericResponse<any>> => {
     return {
       resultCode: "ERROR",
       resultDescription: "Failed to fetch welcome message.",
+      resultObj: null,
+      executionTime: 0,
+    };
+  }
+};
+
+export const generateAIResponse = async (
+  prompt: string,
+): Promise<GenericResponse> => {
+  try {
+    const response = await fetch("http://localhost:8080/api/ai/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Request failed");
+    }
+
+    // Full GenericResponse from backend
+    return await response.json();
+  } catch (error) {
+    return {
+      resultCode: "ERROR",
+      resultDescription: "Failed to generate AI response.",
       resultObj: null,
       executionTime: 0,
     };
